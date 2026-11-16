@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Uma surpresa para Kauane ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rosa:#f8d7e0; --rosa2:#f3b8c8; --vinho:#6d1230; --vinho2:#8c1d40;
+    --creme:#fff6e9; --dourado:#c9a24b; --dourado2:#e8cf86;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Quicksand',sans-serif;
+    color:var(--vinho);
+    background:var(--vinho);
+    overflow-x:hidden;
+  }
+
+  /* ---------- PÁGINAS ---------- */
+  .page{
+    position:fixed;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    overflow-y:auto;
+    opacity:0;visibility:hidden;
+    transform:scale(1.04);
+    transition:opacity .9s ease, transform .9s ease, visibility .9s;
+    background-size:cover;background-position:center;
+  }
+  .page.active{opacity:1;visibility:visible;transform:scale(1);z-index:2}
+
+  #p1{background:
+    linear-gradient(rgba(109,18,48,.55),rgba(248,215,224,.55)),
+    url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1600&q=70'),
+    linear-gradient(160deg,#f8d7e0,#c98aa0 60%,#6d1230);}
+  #p2{background:
+    linear-gradient(rgba(255,246,233,.88),rgba(248,215,224,.9)),
+    url('https://images.unsplash.com/photo-1431274172761-fca41d930114?auto=format&fit=crop&w=1600&q=60'),
+    linear-gradient(160deg,#fff6e9,#f8d7e0);}
+  #p3{background:
+    linear-gradient(rgba(109,18,48,.35),rgba(255,246,233,.85) 70%),
+    url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1600&q=70'),
+    linear-gradient(160deg,#f3b8c8,#fff6e9);}
+  #p4{background:
+    radial-gradient(circle at 50% 30%,#8c1d40,#4a0b20 80%);}
+
+  /* ---------- CARTÃO ---------- */
+  .card{
+    position:relative;
+    width:100%;max-width:560px;
+    background:rgba(255,246,233,.94);
+    border:2px solid var(--dourado);
+    border-radius:22px;
+    padding:34px 26px;
+    text-align:center;
+    box-shadow:0 20px 60px rgba(60,5,25,.4), inset 0 0 0 6px rgba(201,162,75,.15);
+    backdrop-filter:blur(4px);
+    margin:auto;
+  }
+  .card::before,.card::after{
+    content:"❀";position:absolute;font-size:28px;color:var(--rosa2);
+  }
+  .card::before{top:10px;left:14px}
+  .card::after{bottom:10px;right:14px}
+
+  h1,h2{font-family:'Great Vibes',cursive;font-weight:400;color:var(--vinho2);line-height:1.1}
+  h1{font-size:clamp(2.8rem,10vw,4.2rem)}
+  h2{font-size:clamp(2.4rem,8vw,3.4rem)}
+  .sub{font-family:'Playfair Display',serif;font-style:italic;margin:10px 0 18px;font-size:1.05rem}
+  p.msg{font-family:'Playfair Display',serif;line-height:1.6;font-size:1.05rem;margin-bottom:18px}
+
+  .eiffel{width:90px;height:auto;margin:0 auto 6px;display:block;filter:drop-shadow(0 4px 6px rgba(0,0,0,.25))}
+
+  input[type=password],input[type=text]{
+    width:100%;padding:14px 16px;border-radius:50px;
+    border:2px solid var(--rosa2);background:#fff;
+    font:inherit;font-size:1.05rem;text-align:center;color:var(--vinho);
+    outline:none;transition:.3s;margin-bottom:14px;
+  }
+  input:focus{border-color:var(--dourado);box-shadow:0 0 0 4px rgba(201,162,75,.25)}
+
+  .btn{
+    cursor:pointer;border:none;
+    background:linear-gradient(135deg,var(--vinho2),var(--vinho));
+    color:var(--creme);font:inherit;font-weight:600;font-size:1.05rem;
+    padding:14px 30px;border-radius:50px;
+    border:2px solid var(--dourado);
+    box-shadow:0 8px 20px rgba(109,18,48,.35);
+    transition:transform .25s, box-shadow .25s;
+  }
+  .btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 12px 26px rgba(109,18,48,.45)}
+  .btn:active{transform:scale(.97)}
+
+  .hint{
+    margin-top:18px;font-size:.92rem;font-style:italic;
+    background:rgba(248,215,224,.6);border-radius:14px;padding:10px 14px;
+    border:1px dashed var(--dourado);
+  }
+  .error{
+    min-height:24px;margin-top:12px;font-weight:600;color:#b01846;
+    transition:.3s;
+  }
+  .shake{animation:shake .5s}
+  @keyframes shake{
+    0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}
+    40%{transform:translateX(10px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}
+  }
+
+  /* ---------- OPÇÕES DE DATA ---------- */
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  .opt{
+    cursor:pointer;padding:16px 8px;border-radius:16px;
+    background:#fff;border:2px solid var(--rosa2);
+    font:inherit;font-weight:600;color:var(--vinho);font-size:1rem;
+    transition:.25s;
+  }
+  .opt:hover{background:var(--rosa);transform:translateY(-3px);border-color:var(--dourado)}
+  .opt.wrong{background:#ffd9df;border-color:#b01846;animation:shake .5s}
+  .opt.right{background:linear-gradient(135deg,var(--dourado2),var(--dourado));border-color:var(--dourado);color:var(--vinho)}
+
+  /* ---------- CARTA (página 3) ---------- */
+  .letter-wrap{max-width:680px;width:100%;margin:auto}
+  .hero{text-align:center;margin-bottom:20px;color:var(--vinho)}
+  .hero h2{color:var(--vinho);text-shadow:0 2px 12px rgba(255,246,233,.9)}
+  .hero .sub{color:var(--vinho);font-weight:600;text-shadow:0 1px 8px rgba(255,246,233,.9)}
+  .letter{
+    background:
+      repeating-linear-gradient(transparent,transparent 31px,rgba(201,162,75,.18) 32px),
+      var(--creme);
+    border:2px solid var(--dourado);border-radius:10px;
+    padding:30px 24px;
+    font-family:'Playfair Display',serif;
+    font-size:1.08rem;line-height:32px;
+    box-shadow:0 18px 50px rgba(60,5,25,.35);
+    position:relative;
+  }
+  .letter p{margin-bottom:32px;text-align:left}
+  .letter .first{font-family:'Great Vibes',cursive;font-size:2rem;line-height:1.2;margin-bottom:20px}
+  .letter .seal{text-align:center;font-size:2rem;margin:0}
+  .center{text-align:center;margin:26px 0 30px}
+
+  /* ---------- CARTA FINAL (página 4) ---------- */
+  .stage{text-align:center;width:100%;max-width:520px;margin:auto;color:var(--creme)}
+  .stage h2{color:var(--dourado2)}
+  .stage p.intro{font-family:'Playfair Display',serif;font-size:1.15rem;margin:10px 0 34px}
+
+  .envelope{
+    position:relative;width:min(320px,80vw);height:min(210px,52vw);
+    margin:0 auto 30px;
+    perspective:900px;
+    animation:float 3s ease-in-out infinite;
+  }
+  @keyframes float{50%{transform:translateY(-10px)}}
+  .env-back{position:absolute;inset:0;background:#e9c79a;border-radius:8px;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+  .paper{
+    position:absolute;left:8%;right:8%;top:8%;bottom:8%;
+    background:var(--creme);border-radius:6px;
+    transition:transform 1.2s ease .6s, height 1.2s ease .6s;
+    z-index:2;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--vinho);font-size:2rem;
+  }
+  .env-front{
+    position:absolute;inset:0;z-index:3;border-radius:8px;
+    background:
+      linear-gradient(to top right,transparent 49.5%,#d9b480 50%) left/50% 100% no-repeat,
+      linear-gradient(to top left,transparent 49.5%,#d9b480 50%) right/50% 100% no-repeat;
+    clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);
+    background-color:#efd2a6;
+  }
+  .flap{
+    position:absolute;left:0;right:0;top:0;height:58%;z-index:4;
+    background:#dfb97f;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top;
+    transition:transform .8s ease, z-index 0s .4s;
+  }
+  .heart-seal{
+    position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);
+    z-index:5;font-size:2.2rem;transition:opacity .4s;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));
+  }
+  .envelope.open .flap{transform:rotateX(180deg);z-index:1}
+  .envelope.open .heart-seal{opacity:0}
+  .envelope.open .paper{transform:translateY(-70%)}
+  .envelope.gone{animation:none;opacity:0;height:0;margin:0;transition:opacity .8s,height .8s .2s}
+
+  .declaration{
+    display:none;
+    background:var(--creme);color:var(--vinho);
+    border:3px solid var(--dourado);border-radius:20px;
+    padding:34px 20px;
+    box-shadow:0 0 50px rgba(232,207,134,.5);
+    animation:reveal 1.4s ease forwards;
+  }
+  .declaration.show{display:block}
+  @keyframes reveal{
+    from{opacity:0;transform:translateY(60px) scale(.7)}
+    to{opacity:1;transform:none}
+  }
+  .big{
+    font-family:'Playfair Display',serif;font-weight:700;
+    font-size:clamp(1.7rem,7vw,2.6rem);line-height:1.25;
+    color:var(--vinho2);
+    text-shadow:0 2px 0 var(--dourado2);
+    margin-bottom:26px;
+  }
+  .big span{display:inline-block;animation:pulse 1.6s infinite}
+  @keyframes pulse{50%{transform:scale(1.12)}}
+  .sign{font-family:'Playfair Display',serif;font-style:italic;line-height:1.8}
+  .sign .name{font-family:'Great Vibes',cursive;font-style:normal;font-size:2.1rem;color:var(--vinho2);display:block;margin-top:8px;line-height:1.2}
+
+  /* ---------- CORAÇÕES FLUTUANTES ---------- */
+  #hearts{position:fixed;inset:0;pointer-events:none;z-index:10;overflow:hidden}
+  .heart{
+    position:absolute;bottom:-40px;
+    animation:rise linear forwards;
+    opacity:.8;
+  }
+  @keyframes rise{
+    to{transform:translateY(-110vh) rotate(25deg);opacity:0}
+  }
+
+  @media(max-width:420px){
+    .card{padding:28px 18px}
+    .options{gap:10px}
+    .letter{padding:24px 16px;font-size:1rem}
+  }
+</style>
+</head>
+<body>
+
+<div id="hearts"></div>
+
+<!-- ========== PÁGINA 1 ========== -->
+<section class="page active" id="p1">
+  <div class="card">
+    <svg class="eiffel" viewBox="0 0 100 160" aria-label="Torre Eiffel">
+      <g fill="none" stroke="#c9a24b" stroke-width="3" stroke-linejoin="round">
+        <path d="M50 4 L50 20"/>
+        <path d="M50 20 L38 70 L62 70 Z"/>
+        <path d="M34 70 L66 70"/>
+        <path d="M38 70 L22 156 M62 70 L78 156"/>
+        <path d="M28 120 L72 120"/>
+        <path d="M30 70 L70 70 L72 80 L28 80 Z" fill="#c9a24b"/>
+        <path d="M38 70 Q50 110 62 70"/>
+        <path d="M25 140 Q50 100 75 140"/>
+      </g>
+    </svg>
+    <h1>Bonjour, meu amor</h1>
+    <p class="sub">♡ Paris te espera ♡</p>
+    <p class="msg">Existe um lugar que ainda vamos conhecer juntos… Mas, antes de entrar, você precisa descobrir a palavra que abre esta surpresa.</p>
+    <form id="formSenha" autocomplete="off">
+      <input type="password" id="senha" placeholder="Digite a palavra mágica…" aria-label="Senha">
+      <button type="submit" class="btn">Desbloquear ♡</button>
+    </form>
+    <div class="error" id="erroSenha"></div>
+    <div class="hint">💡 O lugar que iremos no futuro. Uma cidade cheia de luz, amor e sonhos…</div>
+  </div>
+</section>
+
+<!-- ========== PÁGINA 2 ========== -->
+<section class="page" id="p2">
+  <div class="card">
+    <h2>Uma data especial ♡</h2>
+    <p class="msg" style="margin-top:14px">Agora quero ver se você lembra da nossa data. Qual é o dia que marcou a nossa história?</p>
+    <div class="options" id="opcoes"></div>
+    <div class="error" id="erroData"></div>
+  </div>
+</section>
+
+<!-- ========== PÁGINA 3 ========== -->
+<section class="page" id="p3">
+  <div class="letter-wrap">
+    <div class="hero">
+      <svg class="eiffel" viewBox="0 0 100 160" style="width:70px">
+        <g fill="none" stroke="#6d1230" stroke-width="3" stroke-linejoin="round">
+          <path d="M50 4 L50 20"/><path d="M50 20 L38 70 L62 70 Z"/>
+          <path d="M38 70 L22 156 M62 70 L78 156"/>
+          <path d="M30 70 L70 70 L72 80 L28 80 Z" fill="#6d1230"/>
+          <path d="M38 70 Q50 110 62 70"/><path d="M25 140 Q50 100 75 140"/>
+        </g>
+      </svg>
+      <h2>Paris, meu amor</h2>
+      <p class="sub">Um dia, nós dois. E o mundo inteiro pela frente.</p>
+    </div>
+
+    <div class="letter">
+      <p class="first">Meu amor,</p>
+      <p>Um dia vamos casar e iremos ir a Paris. O meu amor por você vai ser ainda maior, eu te amo mais que tudo, nós se ama e quero que vc saiba disso até o fim, minha vida sem você não é nada.</p>
+      <p>Eu quero acordar e ver o Victor Jr. e você ao meu lado, nós indo pegar o carro e passear rindo, Victor Jr. na cadeirinha dormindo e eu falando o quanto eu te amo, iremos vencer qualquer obstáculo, até pq o nosso amor supera tudo.</p>
+      <p>Eu amo te amar a cada segundo, só de pensar em você meu coração dispara e você sabe disso, vc é meu amorzao, minha mulher, minha princesa, minha delícia e tudo de bom.</p>
+      <p>Nosso casamento será em Aparecida na igreja, e iremos ir pra Paris comemorar.</p>
+      <p>Fazer tudo que a vida estiver planejando e oque Deus permitir, minha vida com você é maravilhosa. Eu te amo igual Deus ama o mundo.</p>
+      <p class="seal">❤️🌹🗼🌹❤️</p>
+    </div>
+
+    <div class="center">
+      <button class="btn" id="btnUltima">Abrir a última surpresa ♡</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PÁGINA 4 ========== -->
+<section class="page" id="p4">
+  <div class="stage">
+    <h2>Uma cartinha para você</h2>
+    <p class="intro">Uma cartinha para você. Pode abrir, minha goleira… 💌</p>
+
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="paper">💗</div>
+      <div class="env-front"></div>
+      <div class="flap"></div>
+      <div class="heart-seal">❤️</div>
+    </div>
+
+    <button class="btn" id="btnCarta">Abrir a carta 💌</button>
+
+    <div class="declaration" id="declaracao">
+      <div class="big">EU TE AMO, MINHA GOLEIRA BEBEZINHA PRO MAX <span>❤️</span></div>
+      <div class="sign">
+        Assinado,<br><br>
+        amor da sua vida,
+        <span class="name">Victor Hugo Appolinario Alves</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const $ = s => document.querySelector(s);
+  const pages = ['p1','p2','p3','p4'];
+  const progresso = {senha:false, data:false};
+
+  function ir(id){
+    if(id==='p2' && !progresso.senha) return;
+    if((id==='p3'||id==='p4') && !(progresso.senha && progresso.data)) return;
+    pages.forEach(p => $('#'+p).classList.remove('active'));
+    $('#'+id).classList.add('active');
+    $('#'+id).scrollTop = 0;
+    explosao();
+  }
+
+  /* ----- Página 1: senha ----- */
+  $('#formSenha').addEventListener('submit', e=>{
+    e.preventDefault();
+    const v = $('#senha').value.trim().toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const erro = $('#erroSenha');
+    if(v === 'paris'){
+      progresso.senha = true;
+      erro.textContent = '';
+      ir('p2');
+    }else{
+      erro.textContent = 'Ainda não é essa, meu amor… pensa naquela cidade dos nossos sonhos 💕';
+      const c = $('#p1 .card');
+      c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
+    }
+  });
+
+  /* ----- Página 2: data ----- */
+  const datas = ['10 de setembro','14 de setembro','21 de setembro','04 de abril','07 de setembro','15 de outubro'];
+  const box = $('#opcoes');
+  datas.forEach(d=>{
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = d;
+    b.addEventListener('click', ()=>{
+      if(!progresso.senha) return;
+      if(d === '14 de setembro'){
+        progresso.data = true;
+        b.classList.add('right');
+        $('#erroData').style.color = '#2f7d4f';
+        $('#erroData').textContent = 'Você lembrou! 💖';
+        explosao();
+        setTimeout(()=>ir('p3'), 1400);
+      }else{
+        b.classList.remove('wrong'); void b.offsetWidth; b.classList.add('wrong');
+        $('#erroData').style.color = '#b01846';
+        $('#erroData').textContent = 'Quase, meu amor! Tenta mais uma vez. ❤️';
+      }
+    });
+    box.appendChild(b);
+  });
+
+  /* ----- Página 3 -> 4 ----- */
+  $('#btnUltima').addEventListener('click', ()=> ir('p4'));
+
+  /* ----- Página 4: carta ----- */
+  $('#btnCarta').addEventListener('click', function(){
+    this.style.display = 'none';
+    const env = $('#envelope');
+    env.classList.add('open');
+    setTimeout(()=>{
+      env.classList.add('gone');
+      $('#declaracao').classList.add('show');
+      explosao(40);
+    }, 2200);
+  });
+
+  /* ----- Corações ----- */
+  const hearts = $('#hearts');
+  const emojis = ['❤️','💗','💕','🌸','♡','💖','🌹'];
+  function coracao(){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    h.style.left = Math.random()*100 + 'vw';
+    h.style.fontSize = (14 + Math.random()*22) + 'px';
+    const dur = 6 + Math.random()*6;
+    h.style.animationDuration = dur + 's';
+    hearts.appendChild(h);
+    setTimeout(()=>h.remove(), dur*1000);
+  }
+  setInterval(coracao, 650);
+  function explosao(n=18){
+    for(let i=0;i<n;i++) setTimeout(coracao, i*60);
+  }
+})();
+</script>
+</body>
+</html>
